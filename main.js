@@ -11,7 +11,7 @@
   'use strict';
 
   function hideMainContent() {
-    const elements = document.querySelectorAll('.Layout_mainContent__jXliI');
+    const elements = document.querySelectorAll('.Layout_mainContent__Gr_Jz');
     // hide or remove:
     elements.forEach(el => el.style.display = 'none'); // or el.remove();
   }
