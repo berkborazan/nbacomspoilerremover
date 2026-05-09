@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name        NBA.com Main Content Hider (Homepage only)
+// @name        NBA.com Spoiler Hider
 // @namespace   https://github.com/berkborazan/nbacomspoilerremover
-// @description Hides the main content area on NBA.com homepage only
+// @description Hides the main content and footer using separate logic for easier debugging
 // @match       https://www.nba.com/
 // @grant       none
 // @run-at      document-end
@@ -10,16 +10,39 @@
 (function() {
   'use strict';
 
+
   function hideMainContent() {
-    const elements = document.querySelectorAll('.Layout_mainContent__Gr_Jz');
-    // hide or remove:
-    elements.forEach(el => el.style.display = 'none'); // or el.remove();
+    const mainContent = document.querySelectorAll('.Layout_mainContent__Gr_Jz');
+    mainContent.forEach(el => {
+      if (el && el.style.display !== 'none') {
+        el.style.display = 'none';
+      }
+    });
   }
 
-  // run initially
-  hideMainContent();
 
-  // watch for dynamically loaded content
-  const observer = new MutationObserver(() => hideMainContent());
+  function hideFooter() {
+    const footerSelectors = '.Footer_footer__4vzqH, footer[class*="Footer_footer"]';
+    const footers = document.querySelectorAll(footerSelectors);
+    footers.forEach(el => {
+      if (el && el.style.display !== 'none') {
+        el.style.display = 'none';
+      }
+    });
+  }
+
+  function runAllHiders() {
+    hideMainContent();
+    hideFooter();
+  }
+
+  // Run initially
+  runAllHiders();
+
+  // Watch for dynamically loaded content and re-run both
+  const observer = new MutationObserver(() => {
+    runAllHiders();
+  });
+
   observer.observe(document.body, { childList: true, subtree: true });
 })();
